@@ -1,26 +1,58 @@
 ﻿
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Test1 : MonoBehaviour
 {
-    [SerializeField] CustomButton customButton;
+    [SerializeField] CustomButton customButton1;
+    [SerializeField] CustomButton customButton2;
     Pointers gg;
     Transform transformTemp;
-    int i;
+    IAnimButtons AnimButtons;
+    bool isStopDOT=true;
+    Task isTaskStop;
     private void OnEnable()
     {
-        customButton.OnDataButton += CustDataButton;
+        customButton1.OnDataButton += CustDataButton1;
+        customButton2.OnDataButton += CustDataButton2;
     }
-
-    private void CustDataButton(DataButton button)
+    private void Start()
     {
-        gg=button.Pointers;
-        Debug.Log(gg);
-        transformTemp= button.transform;
-        i++;
-        button.transform.position= new Vector3(transformTemp.position.x + i, transformTemp.position.y + i,transformTemp.position.z);
+        AnimButtons = new DOTween1();
     }
+    private void CustDataButton1(DataButton button)
+    {
+        if( isTaskStop != null)
+        {
+            Debug.Log(isTaskStop.IsCompleted);
+            if (button.Pointers == Pointers.PointerDown && isTaskStop.IsCompleted)
+            {
+                isStopDOT = false;
+                gg = button.Pointers;
+                isTaskStop = AnimButtons.DOTwin(customButton1.transform);
+            }
+        }
+        else { isTaskStop = AnimButtons.DOTwin(customButton1.transform); }
+        
+            
+    }
+    private void CustDataButton2(DataButton button)
+    {
+        if ( isTaskStop != null)
+        {
+            Debug.Log(isTaskStop.IsCompleted);
+            if (button.Pointers == Pointers.PointerDown && isTaskStop.IsCompleted)
+            {
+                isStopDOT = false;
+                gg = button.Pointers;
+                isTaskStop = AnimButtons.DOTwin(customButton2.transform);
+            }
+        }
+        else { isTaskStop = AnimButtons.DOTwin(customButton2.transform); }
 
+
+    }
 }
 
