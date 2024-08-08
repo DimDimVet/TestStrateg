@@ -2,16 +2,19 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CustomButton : Button
+public class CustomButtons : Button
 {
     public Action<DataButton> OnDataButton { get { return onDataButton; } set { onDataButton = value; } }
     private Action<DataButton> onDataButton;
     private DataButton dataButton;
+
     protected override void Start()
     {
         base.Start();
-        dataButton = new DataButton();
-        dataButton.transform = this.transform;
+        dataButton = new DataButton
+        {
+            Transform = this.transform
+        };
     }
     //фокус
     public override void OnPointerEnter(PointerEventData eventData)
