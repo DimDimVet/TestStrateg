@@ -17,7 +17,7 @@ public class GroundPanelMainMenu : UIWrapper
 
     private GameObject[] panels;
     private IButtonExecutor executor;
-    private IAnimUI anim;
+    private IAnimUI gameAnim, loadAnim, settingAnim, exitAnim;
     protected override void SetOnEneble()
     {
         gameButton.OnDataButton += ExecutorGameButton;
@@ -29,24 +29,27 @@ public class GroundPanelMainMenu : UIWrapper
     {
         panels = new GameObject[] { groundPanel, loadPanel, settingPanel };
         executor = new SwithPanels(panels, groundPanel);
-        anim = new ScaleFocus(scaleButton, duration);
+        gameAnim = new ScaleFocus(scaleButton, duration);
+        loadAnim = new ScaleFocus(scaleButton, duration);
+        settingAnim = new ScaleFocus(scaleButton, duration);
+        exitAnim = new ScaleFocus(scaleButton, duration);
     }
     private void ExecutorGameButton(DataButton button)
     {
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                anim.DOTwin(button.Transform,true);
+                gameAnim.DOTwin(button.Transform,true);
                 break;
             case Pointers.PointerExit:
-                Debug.Log("GameExit");
-                anim.DOTwin(button.Transform, false);
+                gameAnim.DOTwin(button.Transform, false);
                 break;
             case Pointers.PointerDown:
+                gameAnim.DOTwin(button.Transform, false);
                 //executor = new SwithPanels(panels, null);
                 break;
             case Pointers.PointerUp:
-
+                gameAnim.DOTwin(button.Transform, true);
                 break;
             default:
                 break;
@@ -57,16 +60,17 @@ public class GroundPanelMainMenu : UIWrapper
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                anim.DOTwin(button.Transform, true);
+                loadAnim.DOTwin(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                anim.DOTwin(button.Transform, false);
+                loadAnim.DOTwin(button.Transform, false);
                 break;
             case Pointers.PointerDown:
+                loadAnim.DOTwin(button.Transform, false);
                 executor = new SwithPanels(panels, loadPanel);
                 break;
             case Pointers.PointerUp:
-
+                loadAnim.DOTwin(button.Transform, true);
                 break;
             default:
                 break;
@@ -77,16 +81,17 @@ public class GroundPanelMainMenu : UIWrapper
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                anim.DOTwin(button.Transform, true);
+                settingAnim.DOTwin(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                anim.DOTwin(button.Transform, false);
+                settingAnim.DOTwin(button.Transform, false);
                 break;
             case Pointers.PointerDown:
+                settingAnim.DOTwin(button.Transform, false);
                 executor = new SwithPanels(panels, settingPanel);
                 break;
             case Pointers.PointerUp:
-
+                settingAnim.DOTwin(button.Transform, true);
                 break;
             default:
                 break;
@@ -97,16 +102,16 @@ public class GroundPanelMainMenu : UIWrapper
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                anim.DOTwin(button.Transform, true);
+                exitAnim.DOTwin(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                anim.DOTwin(button.Transform, false);
+                exitAnim.DOTwin(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-
+                exitAnim.DOTwin(button.Transform, false);
                 break;
             case Pointers.PointerUp:
-
+                exitAnim.DOTwin(button.Transform, true);
                 break;
             default:
                 break;

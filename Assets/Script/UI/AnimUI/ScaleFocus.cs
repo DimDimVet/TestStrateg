@@ -10,6 +10,7 @@ public class ScaleFocus : IAnimUI
     private float activScale;
     private Vector3 currentScale;
     private Vector3 newScale;
+    private Transform tempTransform;
 
     private CancellationTokenSource cancelTokenSource;
     private CancellationToken token;
@@ -29,6 +30,7 @@ public class ScaleFocus : IAnimUI
     }
     public async Task DOTwin(Transform transform, bool isActiv)
     {
+        
         if (currentScale == Vector3.zero) 
         {
             await SetTransform(transform);
@@ -47,11 +49,12 @@ public class ScaleFocus : IAnimUI
         }
         sequence.AppendCallback(() =>
                 {
-                    //Task.Delay(1);
+                    
                 });
-
+        Debug.Log("=");
+        await Task.Delay(1000);
         await Task.Yield();
-        Debug.Log("jr");
+        Debug.Log("+");
     }
 }
 
