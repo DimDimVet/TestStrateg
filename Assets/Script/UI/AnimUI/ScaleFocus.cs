@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,17 +9,12 @@ public class ScaleFocus : IAnimUI
     private float activScale;
     private Vector3 currentScale;
     private Vector3 newScale;
-    private Transform tempTransform;
 
-    private CancellationTokenSource cancelTokenSource;
-    private CancellationToken token;
-    public ScaleFocus( float activScale, float duration)
+    public ScaleFocus(float activScale, float duration)
     {
         this.activScale = activScale;
-        this.duration=duration; 
+        this.duration = duration;
         sequence = DOTween.Sequence();
-        cancelTokenSource = new CancellationTokenSource();
-        token = cancelTokenSource.Token;
     }
     private async Task SetTransform(Transform transform)
     {
@@ -28,10 +22,14 @@ public class ScaleFocus : IAnimUI
         this.newScale = currentScale * activScale;
         await Task.Yield();
     }
-    public async Task DOTwin(Transform transform, bool isActiv)
+    public async Task RunDOTween( bool isActiv)
     {
-        
-        if (currentScale == Vector3.zero) 
+        await Task.Yield();
+    }
+    public async Task RunDOTween(Transform transform, bool isActiv)
+    {
+
+        if (currentScale == Vector3.zero)
         {
             await SetTransform(transform);
         }
@@ -39,22 +37,20 @@ public class ScaleFocus : IAnimUI
         sequence.Kill();
         sequence = DOTween.Sequence();
 
-        if (isActiv) 
+        if (isActiv)
         {
             sequence.Append(transform.DOScale(newScale, duration));
         }
-        else 
+        else
         {
             sequence.Append(transform.DOScale(currentScale, duration));
         }
         sequence.AppendCallback(() =>
                 {
-                    
+
                 });
-        Debug.Log("=");
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         await Task.Yield();
-        Debug.Log("+");
     }
 }
 

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class GroundPanelMainMenu : UIWrapper
 {
@@ -11,13 +13,17 @@ public class GroundPanelMainMenu : UIWrapper
     [SerializeField] private CustomButtons loadButton;
     [SerializeField] private CustomButtons settingButton;
     [SerializeField] private CustomButtons exitButton;
-    [Header("Аним")]
-    [SerializeField][Range(0.1f,5f)] private float scaleButton;
-    [SerializeField][Range(0.1f, 3f)] private float duration;
+    [Header("Аним Кнопки")]
+    [SerializeField][Range(0.1f, 5f)] private float scaleButton;
+    [SerializeField][Range(0.1f, 3f)] private float durationButton;
+    [Header("Аним Панель")]
+    [SerializeField] private Transform pointTypaDefault;
+    [SerializeField] private Transform pointTypaClose;
+    [SerializeField][Range(0.1f, 3f)] private float durationPanel;
 
     private GameObject[] panels;
-    private IButtonExecutor executor;
     private IAnimUI gameAnim, loadAnim, settingAnim, exitAnim;
+    private IAnimUI groundPanelAnim, loadPanelAnim, settingPanelAnim;
     protected override void SetOnEneble()
     {
         gameButton.OnDataButton += ExecutorGameButton;
@@ -27,29 +33,37 @@ public class GroundPanelMainMenu : UIWrapper
     }
     protected override void SetStart()
     {
-        panels = new GameObject[] { groundPanel, loadPanel, settingPanel };
-        executor = new SwithPanels(panels, groundPanel);
-        gameAnim = new ScaleFocus(scaleButton, duration);
-        loadAnim = new ScaleFocus(scaleButton, duration);
-        settingAnim = new ScaleFocus(scaleButton, duration);
-        exitAnim = new ScaleFocus(scaleButton, duration);
+        gameAnim = new ScaleFocus(scaleButton, durationButton);
+        loadAnim = new ScaleFocus(scaleButton, durationButton);
+        settingAnim = new ScaleFocus(scaleButton, durationButton);
+        exitAnim = new ScaleFocus(scaleButton, durationButton);
+
+        groundPanelAnim=new MovePanel(groundPanel,pointTypaDefault, pointTypaClose, durationPanel);
+        groundPanelAnim.RunDOTween(true);
+        loadPanelAnim = new MovePanel(loadPanel,pointTypaDefault, pointTypaClose, durationPanel);
+        loadPanelAnim.RunDOTween(false);
+        settingPanelAnim = new MovePanel(settingPanel,pointTypaDefault, pointTypaClose, durationPanel);
+        settingPanelAnim.RunDOTween(false);
+        //panels = new GameObject[] { groundPanel, loadPanel, settingPanel };
+        //movePanels = new MovePanel(panels, pointTypaDefault, pointTypaClose, durationPanel);
+        //movePanels.RunDOTween(groundPanel.transform, true);
     }
     private void ExecutorGameButton(DataButton button)
     {
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                gameAnim.DOTwin(button.Transform,true);
+                gameAnim.RunDOTween(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                gameAnim.DOTwin(button.Transform, false);
+                gameAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-                gameAnim.DOTwin(button.Transform, false);
+                gameAnim.RunDOTween(button.Transform, false);
                 //executor = new SwithPanels(panels, null);
                 break;
             case Pointers.PointerUp:
-                gameAnim.DOTwin(button.Transform, true);
+                gameAnim.RunDOTween(button.Transform, true);
                 break;
             default:
                 break;
@@ -60,17 +74,18 @@ public class GroundPanelMainMenu : UIWrapper
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                loadAnim.DOTwin(button.Transform, true);
+                loadAnim.RunDOTween(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                loadAnim.DOTwin(button.Transform, false);
+                loadAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-                loadAnim.DOTwin(button.Transform, false);
-                executor = new SwithPanels(panels, loadPanel);
+                loadAnim.RunDOTween(button.Transform, false);
+                groundPanelAnim.RunDOTween(false);
+                loadPanelAnim.RunDOTween(true);
                 break;
             case Pointers.PointerUp:
-                loadAnim.DOTwin(button.Transform, true);
+                loadAnim.RunDOTween(button.Transform, true);
                 break;
             default:
                 break;
@@ -81,17 +96,18 @@ public class GroundPanelMainMenu : UIWrapper
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                settingAnim.DOTwin(button.Transform, true);
+                settingAnim.RunDOTween(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                settingAnim.DOTwin(button.Transform, false);
+                settingAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-                settingAnim.DOTwin(button.Transform, false);
-                executor = new SwithPanels(panels, settingPanel);
+                settingAnim.RunDOTween(button.Transform, false);
+                groundPanelAnim.RunDOTween(false);
+                settingPanelAnim.RunDOTween(true);
                 break;
             case Pointers.PointerUp:
-                settingAnim.DOTwin(button.Transform, true);
+                settingAnim.RunDOTween(button.Transform, true);
                 break;
             default:
                 break;
@@ -102,16 +118,16 @@ public class GroundPanelMainMenu : UIWrapper
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                exitAnim.DOTwin(button.Transform, true);
+                exitAnim.RunDOTween(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                exitAnim.DOTwin(button.Transform, false);
+                exitAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-                exitAnim.DOTwin(button.Transform, false);
+                exitAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerUp:
-                exitAnim.DOTwin(button.Transform, true);
+                exitAnim.RunDOTween(button.Transform, true);
                 break;
             default:
                 break;
