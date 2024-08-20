@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ScaleFocus : IAnimUI
 {
+    private TaskCompletionSource<object> tsk;
     private Sequence sequence;
     private float duration;
     private float activScale;
@@ -22,13 +23,19 @@ public class ScaleFocus : IAnimUI
         this.newScale = currentScale * activScale;
         await Task.Yield();
     }
-    public async Task RunDOTween( bool isActiv)
+    public async Task<object> RunDOTween( bool isActiv)
     {
-        await Task.Yield();
+        tsk = new TaskCompletionSource<object>();
+        tsk.SetResult(null);
+        return await tsk.Task;
     }
-    public async Task RunDOTween(Transform transform, bool isActiv)
+    public async Task<object> RunDOTween(Transform transform, bool isActiv)
     {
-
+        return await Executor(transform,isActiv);
+    }
+    private async Task<object> Executor(Transform transform, bool isActiv)
+    {
+        tsk = new TaskCompletionSource<object>();
         if (currentScale == Vector3.zero)
         {
             await SetTransform(transform);
@@ -45,12 +52,12 @@ public class ScaleFocus : IAnimUI
         {
             sequence.Append(transform.DOScale(currentScale, duration));
         }
-        sequence.AppendCallback(() =>
-                {
+        sequence.OnComplete(() =>
+        {
+            tsk.SetResult(null);
+        });
 
-                });
-        //await Task.Delay(1000);
-        await Task.Yield();
+        return tsk.Task;
     }
 }
 

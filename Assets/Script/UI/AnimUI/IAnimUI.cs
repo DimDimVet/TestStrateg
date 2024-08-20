@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IAnimUI
 {
-    Task RunDOTween(bool isActiv);
-    Task RunDOTween(Transform transform, bool isActiv);
+    Task<object> RunDOTween(bool isActiv);
+    Task<object> RunDOTween(Transform transform, bool isActiv);
 }
 

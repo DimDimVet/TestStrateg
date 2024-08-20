@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MovePanel : IAnimUI
 {
+    TaskCompletionSource<object> tsk;
     private Sequence sequence;
     private float duration;
 
@@ -19,8 +20,19 @@ public class MovePanel : IAnimUI
         this.duration = duration;
     }
 
-    public async Task RunDOTween(bool isActiv)
+    public async Task<object> RunDOTween(bool isActiv)
     {
+        return await Executor(isActiv);
+    }
+    public async Task<object> RunDOTween(Transform transform, bool isActiv)
+    {
+        tsk = new TaskCompletionSource<object>();
+        tsk.SetResult(null);
+        return await tsk.Task;
+    }
+    private Task<object> Executor(bool isActiv)
+    {
+        tsk = new TaskCompletionSource<object>();
         sequence.Kill();
         sequence = DOTween.Sequence();
         if (isActiv)
@@ -32,16 +44,13 @@ public class MovePanel : IAnimUI
             sequence.Append(panel.transform.DOMove(pointTypaClose, duration));
         }
 
-        sequence.AppendCallback(() =>
+        sequence.OnComplete(() =>
         {
+            tsk.SetResult(null);
             sequence.Kill();
         });
 
-        await Task.Yield();
-    }
-    public async Task RunDOTween(Transform transform, bool isActiv)
-    {
-        await Task.Yield();
+        return tsk.Task;
     }
 }
 

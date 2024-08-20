@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UIElements;
 
 public class LoadPanelMainMenu : UIWrapper
 {
@@ -16,7 +15,6 @@ public class LoadPanelMainMenu : UIWrapper
     [SerializeField] private Transform pointTypaClose;
     [SerializeField][Range(0.1f, 3f)] private float durationPanel;
 
-    private GameObject[] panels;
     private IAnimUI returnAnim;
     private IAnimUI groundPanelAnim, loadPanelAnim;
     protected override void SetOnEneble()
@@ -30,23 +28,23 @@ public class LoadPanelMainMenu : UIWrapper
         groundPanelAnim = new MovePanel(groundPanel, pointTypaDefault, pointTypaClose, durationPanel);
         loadPanelAnim = new MovePanel(loadPanel, pointTypaDefault, pointTypaClose, durationPanel);
     }
-    private void ExecutorReternButton(DataButton button)
+    private async void ExecutorReternButton(DataButton button)
     {
         switch (button.Pointers)
         {
             case Pointers.PointerEnter:
-                returnAnim.RunDOTween(button.Transform, true);
+                await returnAnim.RunDOTween(button.Transform, true);
                 break;
             case Pointers.PointerExit:
-                returnAnim.RunDOTween(button.Transform, false);
+                await returnAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-                returnAnim.RunDOTween(button.Transform, false);
-                groundPanelAnim.RunDOTween(true);
-                loadPanelAnim.RunDOTween(false);
+                await loadPanelAnim.RunDOTween(false);
+                await groundPanelAnim.RunDOTween(true);
+                await returnAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerUp:
-                returnAnim.RunDOTween(button.Transform, true);
+                await returnAnim.RunDOTween(button.Transform, true);
                 break;
             default:
                 break;
