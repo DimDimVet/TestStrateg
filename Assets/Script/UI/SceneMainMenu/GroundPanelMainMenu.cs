@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GroundPanelMainMenu : UIWrapper
 {
+    [SerializeField] private string NameScene;
     [Header("Панели")]
     [SerializeField] private GameObject groundPanel;
     [SerializeField] private GameObject loadPanel;
@@ -55,6 +57,8 @@ public class GroundPanelMainMenu : UIWrapper
                 break;
             case Pointers.PointerDown:
                 await gameAnim.RunDOTween(button.Transform, false);
+                await SwithScenes.StartScene(NameScene);
+                SceneManager.LoadSceneAsync(NameScene);
                 break;
             case Pointers.PointerUp:
                 await gameAnim.RunDOTween(button.Transform, true);
