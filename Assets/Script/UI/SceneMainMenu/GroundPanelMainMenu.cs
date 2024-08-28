@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GroundPanelMainMenu : UIWrapper
 {
-    [SerializeField] private string NameScene;
+    [Header("Исп.скрипт")]
+    [SerializeField] private SceneWrapper executorSwithScene;
     [Header("Панели")]
     [SerializeField] private GameObject groundPanel;
     [SerializeField] private GameObject loadPanel;
@@ -57,8 +57,7 @@ public class GroundPanelMainMenu : UIWrapper
                 break;
             case Pointers.PointerDown:
                 await gameAnim.RunDOTween(button.Transform, false);
-                await SwithScenes.StartScene(NameScene);
-                SceneManager.LoadSceneAsync(NameScene);
+                if (executorSwithScene != null) { await executorSwithScene.NextSceneExecutor(); }
                 break;
             case Pointers.PointerUp:
                 await gameAnim.RunDOTween(button.Transform, true);
@@ -130,6 +129,13 @@ public class GroundPanelMainMenu : UIWrapper
             default:
                 break;
         }
+    }
+    private void OnDestroy()
+    {
+        if (gameAnim != null) { gameAnim.StopDOTween(); }
+        if (loadAnim != null) { loadAnim.StopDOTween(); }
+        if (settingAnim != null) { settingAnim.StopDOTween(); }
+        if (exitAnim != null) { exitAnim.StopDOTween(); }
     }
 }
 

@@ -52,5 +52,12 @@ public class MovePanel : IAnimUI
 
         return tsk.Task;
     }
+    public async Task<object> StopDOTween()
+    {
+        tsk = new TaskCompletionSource<object>();
+        sequence.Kill();
+        tsk.SetResult(null);
+        return await tsk.Task;
+    }
 }
 

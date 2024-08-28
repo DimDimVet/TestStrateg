@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class UIWrapper : MonoBehaviour
 {
-
     private void OnEnable()
     {
         SetOnEneble();

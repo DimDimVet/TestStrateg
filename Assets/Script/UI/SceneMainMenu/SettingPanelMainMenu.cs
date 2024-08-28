@@ -50,5 +50,11 @@ public class SettingPanelMainMenu : UIWrapper
                 break;
         }
     }
+    private void OnDestroy()
+    {
+        if (returnAnim != null) { returnAnim.StopDOTween(); }
+        if (groundPanelAnim != null) { groundPanelAnim.StopDOTween(); }
+        if (settingPanelAnim != null) { settingPanelAnim.StopDOTween(); }
+    }
 }
 
