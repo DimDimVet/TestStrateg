@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,39 +18,74 @@ internal class ExecutorSwithScene : ISwithScene
     }
     public async Task<object> BackScene()
     {
-        tsk.SetResult(await SwithScene(backScene));
+        tsk = new TaskCompletionSource<object>();
+        SwithScene(backScene);
+        tsk.SetResult(null);
         return await tsk.Task;
     }
 
     public async Task<object> NextScene()
     {
-        tsk.SetResult(await SwithScene(nextScene));
+        tsk = new TaskCompletionSource<object>();
+        SwithScene(nextScene);
+        tsk.SetResult(null);
         return await tsk.Task;
     }
-    private async Task<object> SwithScene(string nameScene)
+    private void SwithScene(string nameScene)
     {
-        tsk = new TaskCompletionSource<object>();
-        done = new AsyncOperation();
-        int t = 0;
+        AsyncOperation done = SceneManager.LoadSceneAsync(nameScene);
+
+        while (!done.isDone)
+        {
+            Thread.Sleep(100);
+            Debug.Log("load");
+            // Обновление индикатора загрузки, если необходимо
+            
+        }
+        //tsk = new TaskCompletionSource<object>();
+        //done = new AsyncOperation();
+        //int t = 0;
+        //Debug.Log("start");
+        ////for (int i = 0; i < 1000; i++)
+
         //while (isRun)
         //{
-        //Debug.Log(done.isDone);
-            t++;
-            if (t >= 101)
-            {
-                isRun = false;
-                t =100;
 
-                done = SceneManager.LoadSceneAsync(nameScene);
-            Debug.Log(done.isDone);
-            if (!done.isDone)
-                {
-                    isRun = true;
-                }
-            }
+        //    t++;
+        //    Thread.Sleep(10);
+        //    if (t >= 101)
+        //    {
+        //        Debug.Log(t);
+        //        isRun = false;
+        //        t = 0;
+
+
+        //        done = SceneManager.LoadSceneAsync(nameScene);
+
+        //        Debug.Log(done.isDone);
+        //        if (!done.isDone)
+        //        {
+        //            Debug.Log("no");
+        //            isRun = true;
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("ok");
+        //            //break;
+        //        }
+
+        //    }
+
         //}
-        tsk.SetResult(!isRun);
-        return await tsk.Task;
+        //Thread.Sleep(1);
+        //done = SceneManager.LoadSceneAsync(nameScene);
+        //Thread.Sleep(1);
+        //Debug.Log("ok");
+        //done = SceneManager.LoadSceneAsync(nameScene);
+
+        //Debug.Log(done.isDone);
+        //tsk.SetResult(!isRun);
+        //return await tsk.Task;
     }
 }
 
