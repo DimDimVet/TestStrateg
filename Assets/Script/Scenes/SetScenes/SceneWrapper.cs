@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.XR;
-
 
 internal class SceneWrapper : MonoBehaviour
 {
+    public Action OnIteration { get { return onIteration; } set { onIteration = value; } }
+    protected Action onIteration;
+
     [Header("Загрузочная.сцена")]
     [SerializeField] protected string loadScene = "null";
     [Header("След.сцена")]
@@ -13,9 +15,7 @@ internal class SceneWrapper : MonoBehaviour
     [Header("Предыдущ.сцена")]
     [SerializeField] protected string backScene = "null";
 
-    private AsyncOperation done;
-
-    protected ISwithScene swithScene;
+    protected AsyncOperation done;
     private void OnEnable()
     {
         SetOnEneble();
@@ -30,32 +30,25 @@ internal class SceneWrapper : MonoBehaviour
     }
     protected virtual void SetStart()
     {
-        swithScene = new ExecutorSwithScene(loadScene,nextScene, backScene);
+        //
     }
-    public virtual async Task NextSceneExecutor()
+    public virtual void NextScene()
     {
-        SwithScene(nextScene);
-       //await swithScene.NextScene();
+        StartCoroutine(LoadSceneAsync(loadScene, nextScene));
     }
-    public virtual async Task BackSceneExecutor()
+    public virtual void BackScene()
     {
-        await swithScene.BackScene();
+        StartCoroutine(LoadSceneAsync(loadScene, backScene));
     }
+    protected virtual IEnumerator LoadSceneAsync(string sceneToLoad, string targetScene)
+    {
+        DataScenes.TargetScena = targetScene;
+        done = SceneManager.LoadSceneAsync(sceneToLoad);
 
-    private void SwithScene(string nameScene)
-    {
-        int t = 101;
-        for (int i = 0; i < t; i++)
+        while (!done.isDone)
         {
-            if (i == t - 1)
-            {
-                done = SceneManager.LoadSceneAsync(nameScene);
-                if (!done.isDone)
-                {
-                    t = 101;
-                }
-            }
-            else { Debug.Log("load"); }
+            // Обновление индикатора загрузки, если необходимо
+            yield return null;
         }
     }
 }

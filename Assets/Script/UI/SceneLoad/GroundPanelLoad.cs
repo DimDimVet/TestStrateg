@@ -1,20 +1,40 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 internal class GroundPanelLoad : UIWrapper
 {
+    [Header("Исп.скрипт")]
+    [SerializeField] private SceneWrapper executorSwithScene;
     [Header("Индикатор загрузки")]
     [SerializeField] private Image loadImg;
     [Header("Текст загрузки")]
     [SerializeField] private Text loadTxt;
+    [Header("Аним масштаб Image")]
+    [SerializeField][Range(0.1f, 5f)] private float scaleImage;
+    [SerializeField][Range(0.1f, 3f)] private float durationImage;
 
     TaskCompletionSource<object> tsk;
+    private IAnimUI animLoadImg;
+
+    protected override void SetOnEneble()
+    {
+        animLoadImg = new ScaleImage(scaleImage, durationImage);
+        if (executorSwithScene != null) { executorSwithScene.OnIteration += ExecutorScaleImagen; }
+    }
     protected override void SetStart()
     {
-        Debug.Log("ok");
+        //
     }
+    private async void ExecutorScaleImagen()
+    {
+        await animLoadImg.RunDOTween(loadImg.gameObject.transform, true);
+        Debug.Log("!");
+    }
+
+
+
     //private void ExecutorLoad()
     //{
     //    int t = 0;
