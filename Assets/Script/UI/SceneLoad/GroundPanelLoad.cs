@@ -13,8 +13,7 @@ internal class GroundPanelLoad : UIWrapper
     TaskCompletionSource<object> tsk;
     protected override void SetStart()
     {
-        string tt =SwithScenes.CurrentNameScenes;
-        Debug.Log(tt);
+        Debug.Log("ok");
     }
     //private void ExecutorLoad()
     //{

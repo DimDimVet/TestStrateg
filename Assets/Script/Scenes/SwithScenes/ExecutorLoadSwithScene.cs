@@ -2,26 +2,24 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-internal class ExecutorSwithScene : ISwithScene
+
+internal class ExecutorLoadSwithScene : MonoBehaviour, ISwithScene
 {
-    //private string nextScene;
-    //private string backScene;
+    private string nextScene;
+    private string backScene;
     private string loadScene;
     private TaskCompletionSource<object> tsk;
-    private static AsyncOperation done;
-    internal ExecutorSwithScene(string loadScene, string nextScene, string backScene)
+    private AsyncOperation done;
+    internal ExecutorLoadSwithScene(string loadScene, string nextScene, string backScene)
     {
-        //this.nextScene = nextScene;
-        //this.backScene = backScene;
+        this.nextScene = nextScene;
+        this.backScene = backScene;
         this.loadScene = loadScene;
-        DataScenes.NextScene= nextScene;
-        DataScenes.BackScene= backScene;
-        DataScenes.LoadScene= loadScene;
     }
     public async Task<object> BackScene()
     {
         tsk = new TaskCompletionSource<object>();
-        SwithScene(loadScene);
+        SwithScene(backScene);
         tsk.SetResult(null);
         return await tsk.Task;
     }
@@ -29,7 +27,7 @@ internal class ExecutorSwithScene : ISwithScene
     public async Task<object> NextScene()
     {
         tsk = new TaskCompletionSource<object>();
-        SwithScene(loadScene);
+        SwithScene(nextScene);
         tsk.SetResult(null);
         return await tsk.Task;
     }
@@ -40,9 +38,10 @@ internal class ExecutorSwithScene : ISwithScene
         {
             if (i == t - 1)
             {
-                done = SceneManager.LoadSceneAsync(nameScene);
+                AsyncOperation done = SceneManager.LoadSceneAsync(nameScene);
                 if (!done.isDone)
                 {
+                    i = 0;
                     t = 101;
                 }
             }

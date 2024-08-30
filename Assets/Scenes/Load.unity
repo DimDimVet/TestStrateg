@@ -2230,7 +2230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd13be76548de824bb6f408f9bd0b7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: MainMenu
+  loadScene: null
+  nextScene: null
   backScene: null
 --- !u!1 &1968124866
 GameObject:
@@ -2568,7 +2569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62206484cd4a1940841a7848d17a29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NewScene: 
+  executorSwithScene: {fileID: 0}
   groundPanel: {fileID: 419147047}
   loadPanel: {fileID: 1968124866}
   settingPanel: {fileID: 1886617825}
