@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,12 +28,19 @@ internal class GroundPanelLoad : UIWrapper
     {
         //
     }
-    private async void ExecutorScaleImagen()
+    private async Task<object> ExecutorScaleImagen()
     {
+        tsk = new TaskCompletionSource<object>();
         await animLoadImg.RunDOTween(loadImg.gameObject.transform, true);
+        tsk.SetResult(true);
         Debug.Log("!");
+        return await tsk.Task;
+        
     }
-
+    private void OnDestroy()
+    {
+        if (animLoadImg != null) { animLoadImg.StopDOTween(); }
+    }
 
 
     //private void ExecutorLoad()

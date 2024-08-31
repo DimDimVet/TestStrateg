@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 internal class SceneWrapper : MonoBehaviour
 {
-    public Action OnIteration { get { return onIteration; } set { onIteration = value; } }
-    protected Action onIteration;
+    public Func<Task<object>> OnIteration { get { return onIteration; } set { onIteration = value; } }
+    protected Func<Task<object>> onIteration;
 
     [Header("Загрузочная.сцена")]
     [SerializeField] protected string loadScene = "null";
@@ -45,8 +46,15 @@ internal class SceneWrapper : MonoBehaviour
         DataScenes.TargetScena = targetScene;
         done = SceneManager.LoadSceneAsync(sceneToLoad);
 
+        for (int i = 0; i < 101; i++)
+        {
+
+        }
+
+        Debug.Log("zap");
         while (!done.isDone)
         {
+            Debug.Log("-");
             // Обновление индикатора загрузки, если необходимо
             yield return null;
         }

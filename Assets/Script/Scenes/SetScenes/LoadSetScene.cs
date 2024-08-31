@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
 internal class LoadSetScene : SceneWrapper
@@ -16,16 +17,16 @@ internal class LoadSetScene : SceneWrapper
 
         while (!done.isDone)
         {
-            if (!isRun) 
-            { 
-                while(i<=101)
+            if (!isRun)
+            {
+                while (i <= 101)
                 {
                     i++;
                 }
-                onIteration?.Invoke();
+                Task<object> ff =onIteration?.Invoke();
                 isRun = !isRun;
             }
-            
+
             yield return null;
         }
     }
