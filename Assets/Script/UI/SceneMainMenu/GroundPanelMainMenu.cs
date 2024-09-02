@@ -41,9 +41,9 @@ public class GroundPanelMainMenu : UIWrapper
         groundPanelAnim = new MovePanel(groundPanel, pointTypaDefault, pointTypaClose, durationPanel);
         groundPanelAnim.RunDOTween(true);
         loadPanelAnim = new MovePanel(loadPanel, pointTypaDefault, pointTypaClose, durationPanel);
-        loadPanelAnim.RunDOTween(false);
+        loadPanelAnim.RunDOTween(false, true);
         settingPanelAnim = new MovePanel(settingPanel, pointTypaDefault, pointTypaClose, durationPanel);
-        settingPanelAnim.RunDOTween(false);
+        settingPanelAnim.RunDOTween(false, true);
     }
     private async void ExecutorGameButton(DataButton button)
     {
@@ -56,7 +56,7 @@ public class GroundPanelMainMenu : UIWrapper
                 await gameAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
-                if (executorSwithScene != null) {await executorSwithScene.NextScene(); }
+                if (executorSwithScene != null) { await executorSwithScene.NextScene(); }
                 await gameAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerUp:

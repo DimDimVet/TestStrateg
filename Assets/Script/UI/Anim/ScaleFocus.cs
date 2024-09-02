@@ -23,17 +23,17 @@ public class ScaleFocus : IAnimUI
         this.newScale = currentScale * activScale;
         await Task.Yield();
     }
-    public async Task<bool> RunDOTween( bool isActiv)
+    public async Task<bool> RunDOTween( bool isActiv, bool isDefaulPosition = false)
     {
         tsk = new TaskCompletionSource<bool>();
         tsk.SetResult(false);
         return await tsk.Task;
     }
-    public async Task<bool> RunDOTween(Transform transform, bool isActiv)
+    public async Task<bool> RunDOTween(Transform transform, bool isActiv, bool isDefaulPosition = false)
     {
-        return await Executor(transform,isActiv);
+        return await Executor(transform,isActiv, isDefaulPosition);
     }
-    private async Task<bool> Executor(Transform transform, bool isActiv)
+    private async Task<bool> Executor(Transform transform, bool isActiv, bool isDefaulPosition = false)
     {
         tsk = new TaskCompletionSource<bool>();
         if (currentScale == Vector3.zero)

@@ -30,11 +30,11 @@ internal class SceneWrapper : MonoBehaviour
     {
         //
     }
-    public async virtual Task<object> NextScene()
+    public async virtual Task<bool> NextScene()
     {
         return await SceneExecutor.NextScene(loadScene, nextScene);
     }
-    public async virtual Task<object> BackScene()
+    public async virtual Task<bool> BackScene()
     {
         return await SceneExecutor.BackScene(loadScene, backScene);
     }

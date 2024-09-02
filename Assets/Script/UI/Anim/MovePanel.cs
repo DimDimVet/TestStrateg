@@ -20,28 +20,32 @@ public class MovePanel : IAnimUI
         this.duration = duration;
     }
 
-    public async Task<bool> RunDOTween(bool isActiv)
+    public async Task<bool> RunDOTween(bool isActiv,bool isDefaulPosition=false)
     {
-        return await Executor(isActiv);
+        return await Executor(isActiv, isDefaulPosition);
     }
-    public async Task<bool> RunDOTween(Transform transform, bool isActiv)
+    public async Task<bool> RunDOTween(Transform transform, bool isActiv, bool isDefaulPosition = false)
     {
         tsk = new TaskCompletionSource<bool>();
         tsk.SetResult(false);
         return await tsk.Task;
     }
-    private async Task<bool> Executor(bool isActiv)
+    private async Task<bool> Executor(bool isActiv, bool isDefaulPosition = false)
     {
+        float currentDuration;
+        if (isDefaulPosition) { currentDuration = 0.01f; }
+        else { currentDuration = duration; }
+
         tsk = new TaskCompletionSource<bool>();
         sequence.Kill();
         sequence = DOTween.Sequence();
         if (isActiv)
         {
-            sequence.Append(panel.transform.DOMove(pointTypaDefault, duration));
+            sequence.Append(panel.transform.DOMove(pointTypaDefault, currentDuration));
         }
         else
         {
-            sequence.Append(panel.transform.DOMove(pointTypaClose, duration));
+            sequence.Append(panel.transform.DOMove(pointTypaClose, currentDuration));
         }
 
         sequence.OnComplete(() =>

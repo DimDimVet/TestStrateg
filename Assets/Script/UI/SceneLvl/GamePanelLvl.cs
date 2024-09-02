@@ -31,7 +31,7 @@ internal class GamePanelLvl : UIWrapper
         gamePanelAnim = new MovePanel(gamePanel, pointTypaDefault, pointTypaCloseGamePanel, durationPanel);
         gamePanelAnim.RunDOTween(true);
         groundPanelAnim = new MovePanel(groundPanel, pointTypaDefault, pointTypaCloseGroundPanel, durationPanel);
-        groundPanelAnim.RunDOTween(false);
+        groundPanelAnim.RunDOTween(false, true);
     }
     private async void ExecutorMenuButton(DataButton button)
     {

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1123,6 +1123,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1834606777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1026765464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1026765465}
+  m_Layer: 5
+  m_Name: PointTypaClosePanels
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1026765465
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026765464}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1464977674}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -2000, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1107555061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,6 +1622,7 @@ RectTransform:
   - {fileID: 1886617826}
   - {fileID: 2102922386}
   - {fileID: 2048080943}
+  - {fileID: 1026765465}
   - {fileID: 1907569863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2425,7 +2461,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1886617826
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2583,7 +2619,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1968124867
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2897,6 +2933,8 @@ GameObject:
   - component: {fileID: 2072901603}
   - component: {fileID: 2072901604}
   - component: {fileID: 2072901605}
+  - component: {fileID: 2072901606}
+  - component: {fileID: 2072901607}
   m_Layer: 5
   m_Name: UILogic
   m_TagString: Untagged
@@ -2956,22 +2994,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eeb9829c8e3f02429ff89e2a03da009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  executorSwithScene: {fileID: 0}
-  gamePanel: {fileID: 0}
-  groundPanel: {fileID: 0}
-  loadPanel: {fileID: 0}
-  settingsPanel: {fileID: 0}
-  retenGameButton: {fileID: 0}
-  loadButton: {fileID: 0}
-  settingButton: {fileID: 0}
-  exitMainMenuButton: {fileID: 0}
-  scaleButton: 0
-  durationButton: 0
-  pointTypaDefault: {fileID: 0}
-  pointTypaCloseGamePanel: {fileID: 0}
-  pointTypaCloseGroundPanel: {fileID: 0}
-  pointTypaClosePanels: {fileID: 0}
-  durationPanel: 0
+  executorSwithScene: {fileID: 1933975177}
+  gamePanel: {fileID: 514587945}
+  groundPanel: {fileID: 419147047}
+  loadPanel: {fileID: 1968124866}
+  settingsPanel: {fileID: 1886617825}
+  retenGameButton: {fileID: 1779144635}
+  loadButton: {fileID: 1107555066}
+  settingButton: {fileID: 1782681830}
+  exitMainMenuButton: {fileID: 1456463572}
+  scaleButton: 1.2
+  durationButton: 0.5
+  pointTypaDefault: {fileID: 1907569863}
+  pointTypaCloseGamePanel: {fileID: 2102922386}
+  pointTypaCloseGroundPanel: {fileID: 2048080943}
+  pointTypaClosePanels: {fileID: 1026765465}
+  durationPanel: 1
+--- !u!114 &2072901606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072901602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5678032695f70e4cb2469602c4ed797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundPanel: {fileID: 419147047}
+  loadPanel: {fileID: 1968124866}
+  returnButton: {fileID: 1359633892}
+  scaleButton: 1.2
+  duration: 0.5
+  pointTypaDefault: {fileID: 1907569863}
+  pointTypaClose: {fileID: 1026765465}
+  durationPanel: 1
+--- !u!114 &2072901607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072901602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ee3f2f7d2df9e4c821ab584380bec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundPanel: {fileID: 419147047}
+  settingPanel: {fileID: 1886617825}
+  returnButton: {fileID: 809348431}
+  scaleButton: 1.2
+  duration: 0.5
+  pointTypaDefault: {fileID: 1907569863}
+  pointTypaClose: {fileID: 1026765465}
+  durationPanel: 1
 --- !u!1 &2102922385
 GameObject:
   m_ObjectHideFlags: 0
