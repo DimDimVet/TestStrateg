@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 internal class SceneWrapper : MonoBehaviour
 {
@@ -16,7 +14,6 @@ internal class SceneWrapper : MonoBehaviour
     [Header("Предыдущ.сцена")]
     [SerializeField] protected string backScene = "null";
 
-    protected AsyncOperation done;
     private void OnEnable()
     {
         SetOnEneble();
@@ -33,31 +30,13 @@ internal class SceneWrapper : MonoBehaviour
     {
         //
     }
-    public virtual void NextScene()
+    public async virtual Task<object> NextScene()
     {
-        StartCoroutine(LoadSceneAsync(loadScene, nextScene));
+        return await SceneExecutor.NextScene(loadScene, nextScene);
     }
-    public virtual void BackScene()
+    public async virtual Task<object> BackScene()
     {
-        StartCoroutine(LoadSceneAsync(loadScene, backScene));
-    }
-    protected virtual IEnumerator LoadSceneAsync(string sceneToLoad, string targetScene)
-    {
-        DataScenes.TargetScena = targetScene;
-        done = SceneManager.LoadSceneAsync(sceneToLoad);
-
-        for (int i = 0; i < 101; i++)
-        {
-
-        }
-
-        Debug.Log("zap");
-        while (!done.isDone)
-        {
-            Debug.Log("-");
-            // Обновление индикатора загрузки, если необходимо
-            yield return null;
-        }
+        return await SceneExecutor.BackScene(loadScene, backScene);
     }
 }
 

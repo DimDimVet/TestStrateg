@@ -1,34 +1,18 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 internal class LoadSetScene : SceneWrapper
 {
-    private bool isRun=false;
-    protected override void SetStart()
+    protected async override void SetStart()
     {
-        nextScene = DataScenes.TargetScena;
-        StartCoroutine(LoadSceneAsync(loadScene, DataScenes.TargetScena));
+        await onIteration?.Invoke();
+        Debug.Log("stop");
+        bool isTemp=await StartTargetScene();
+        if (!isTemp) { await onIteration?.Invoke(); }
     }
-    protected override IEnumerator LoadSceneAsync(string sceneToLoad, string targetScene)
+    private async Task<bool> StartTargetScene()
     {
-        int i = 0;
-        done = SceneManager.LoadSceneAsync(targetScene);
-
-        while (!done.isDone)
-        {
-            if (!isRun)
-            {
-                while (i <= 101)
-                {
-                    i++;
-                }
-                Task<object> ff =onIteration?.Invoke();
-                isRun = !isRun;
-            }
-
-            yield return null;
-        }
+      return await SceneExecutor.TargetScene();
     }
 }
 

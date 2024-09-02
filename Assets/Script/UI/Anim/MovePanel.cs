@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovePanel : IAnimUI
 {
-    TaskCompletionSource<object> tsk;
+    TaskCompletionSource<bool> tsk;
     private Sequence sequence;
     private float duration;
 
@@ -20,19 +20,19 @@ public class MovePanel : IAnimUI
         this.duration = duration;
     }
 
-    public async Task<object> RunDOTween(bool isActiv)
+    public async Task<bool> RunDOTween(bool isActiv)
     {
         return await Executor(isActiv);
     }
-    public async Task<object> RunDOTween(Transform transform, bool isActiv)
+    public async Task<bool> RunDOTween(Transform transform, bool isActiv)
     {
-        tsk = new TaskCompletionSource<object>();
-        tsk.SetResult(null);
+        tsk = new TaskCompletionSource<bool>();
+        tsk.SetResult(false);
         return await tsk.Task;
     }
-    private Task<object> Executor(bool isActiv)
+    private async Task<bool> Executor(bool isActiv)
     {
-        tsk = new TaskCompletionSource<object>();
+        tsk = new TaskCompletionSource<bool>();
         sequence.Kill();
         sequence = DOTween.Sequence();
         if (isActiv)
@@ -46,17 +46,17 @@ public class MovePanel : IAnimUI
 
         sequence.OnComplete(() =>
         {
-            tsk.SetResult(null);
+            tsk.SetResult(false);
             sequence.Kill();
         });
 
-        return tsk.Task;
+        return await tsk.Task;
     }
-    public async Task<object> StopDOTween()
+    public async Task<bool> StopDOTween()
     {
-        tsk = new TaskCompletionSource<object>();
+        tsk = new TaskCompletionSource<bool>();
         sequence.Kill();
-        tsk.SetResult(null);
+        tsk.SetResult(false);
         return await tsk.Task;
     }
 }

@@ -56,8 +56,8 @@ public class GroundPanelMainMenu : UIWrapper
                 await gameAnim.RunDOTween(button.Transform, false);
                 break;
             case Pointers.PointerDown:
+                if (executorSwithScene != null) {await executorSwithScene.NextScene(); }
                 await gameAnim.RunDOTween(button.Transform, false);
-                if (executorSwithScene != null) { executorSwithScene.NextScene(); }
                 break;
             case Pointers.PointerUp:
                 await gameAnim.RunDOTween(button.Transform, true);
